@@ -1,0 +1,3 @@
+/home/zumbi/CLionProjects/Trab_Int_Comp/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/zumbi/CLionProjects/Trab_Int_Comp/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/zumbi/CLionProjects/Trab_Int_Comp/cmake-build-debug/CMakeFiles/Trab_Int_Comp.dir
