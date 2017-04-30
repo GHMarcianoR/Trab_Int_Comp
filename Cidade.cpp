@@ -36,11 +36,20 @@ void Cidade::ordenarDistCidade()
        auxDisOrd[i] = vecDist[i];
     std::sort(auxDisOrd.begin(), auxDisOrd.begin() + qtdCidades,ordena_esse_diabo);
 }
-int Cidade::retornarCidadeSorteada(float alfa)
+int Cidade::retornarCidadeSorteada(float alfa, std::vector<Cidade*> c)
 {
-    int p = (int)(vecDist.size() * alfa);
-    p = 4;
-    int r = (rand() % p);
+    for(int i = 0; i<c.size(); i++)
+    {
+        for(int j = 0; j<auxDisOrd.size(); j++)
+        if(c[i]->retornarId() == auxDisOrd[j])
+            auxDisOrd[j] = 0;
+    }
+
+    int r = (rand() % (int)(qtdCidades* alfa) );
+
+    while(auxDisOrd[r] == 0)
+        r = (rand() % (int)(qtdCidades* alfa) );
+
     for(int i = 0; i< qtdCidades; i++)
         if(vecDist[i] == auxDisOrd[r])
             return i;
@@ -61,13 +70,10 @@ float Cidade::distanciaAte(int ind) {
 void Cidade::ordenaItens()
 {
     std::sort(vecItensCidade.begin(), vecItensCidade.begin()+vecItensCidade.size(), ordena_esse_diabo2);
-  //  for(int i = 0;i<vecItensCidade.size(); i++)
-    //    std::cout<<vecItensCidade[i]->retornarDif()<<"\n";
 
-  
 }
 static bool  ordena_esse_diabo(float a, float a1) {
-    return a > a1;
+    return a < a1;
 }
 static bool ordena_esse_diabo2(Item* a, Item *a1)
 {

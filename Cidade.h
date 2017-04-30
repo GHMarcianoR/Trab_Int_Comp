@@ -26,7 +26,7 @@ public:
     void adicionarItemCidade(Item *i);
     void ordenarDistCidade();
 
-    int retornarCidadeSorteada(float alfa);
+    int retornarCidadeSorteada(float alfa, std::vector<Cidade*> c);
     Item* retornarItemSorteado(float alfa);
 
     void ordenaItens();

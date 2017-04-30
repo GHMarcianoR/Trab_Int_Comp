@@ -88,7 +88,7 @@ int main()
 
     Metodo* metodo = new Metodo(vecCidades,capacidadeMochila,veloMax, veloMin);
     metodo->definirR(taxaAluguel);
-    metodo->definirAlpha(0.3);
+    metodo->definirAlpha(0.99);
     metodo->Construtivo();
 
 

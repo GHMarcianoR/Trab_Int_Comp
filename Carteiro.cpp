@@ -24,6 +24,14 @@ void Carteiro::calculaVelocidade()
     velocidade = vMax - mochila->retornarPesoAtual()*(vMax - vMin)/mochila->retornarCapacidade();
 }
 Cidade* Carteiro::retornaCidadeAtual() {return cidadeAtual;}
+bool Carteiro::contemNaRota(Cidade *c)
+{
+    if(!rota.empty())
+        if(std::find(rota.begin(), rota.end(),c) != rota.end())
+            return true;
+    return false;
+
+}
 int Carteiro::retornarTamanhoMochila() {return mochila->retornarCapacidade();}
 int Carteiro::retornarQuantidadeItensMochila() {return mochila->retornarQtdCorrenteItens();}
 int Carteiro::retornarPesoAtualMochila() {return mochila->retornarPesoAtual();}

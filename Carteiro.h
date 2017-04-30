@@ -31,6 +31,7 @@ public:
     float retornaVelocidadeAtual();
     int retornarTamanhoMochila();
     int retornarQuantidadeItensMochila();
+    bool contemNaRota(Cidade* c);
     int retornarPesoAtualMochila();
     int retornarCapacidadeMochila();
     std::vector<Cidade*> retornaRota();

@@ -36,20 +36,24 @@ Metodo::Metodo(std::vector<Cidade*> v, int tamMochila, float vMax, float vMin)
 }
 
 float Metodo::calculaCusto(Cidade *c2, int ind) {
-
-
     return R *(c2->distanciaAte(ind))/carteiro->retornaVelocidadeAtual();
-
 }
 void Metodo::Construtivo()
 {
     Cidade* cidadeInicial = carteiro->retornaCidadeAtual(),
-            *cidade = carteiro->retornaCidadeAtual();
+            *cidade;
     int ind,qtdA , qtd;
+
     do
     {
         qtd = 0;
-        ind = cidadeInicial->retornarCidadeSorteada(alpha);
+        cidade = carteiro->retornaCidadeAtual();
+        ind = cidade->retornarCidadeSorteada(alpha, carteiro->retornaRota());
+        if(carteiro->retornaRota().size() >= cidade->retornarQtdCidades())
+           break;
+        while(carteiro->contemNaRota(vecCidades[ind]) && carteiro->retornaRota().size() < cidade->retornarQtdCidades())
+            ind = cidade->retornarCidadeSorteada(alpha,carteiro->retornaRota());
+
         calculaCusto(cidade, ind);
         cidade = vecCidades[ind];
         cidade->ordenaItens();
