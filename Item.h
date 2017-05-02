@@ -10,6 +10,7 @@ class Item {
     float peso;
     float valor;
     int id_item;
+
     float dif;
 
 public:

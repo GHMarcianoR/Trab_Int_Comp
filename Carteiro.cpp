@@ -12,7 +12,10 @@ Carteiro::Carteiro(int t,float vMax,float vMin)
 }
 Carteiro::~Carteiro() {delete mochila;}
 
-void Carteiro::adicionarItem(Item *i) {mochila->adicionarItem(i);}
+void Carteiro::adicionarItem(Item *i) {
+    if(mochila->retornarPesoAtual()+i->retornarValor() <=mochila->retornarCapacidade())
+    mochila->adicionarItem(i);
+}
 
 void Carteiro::defineCidadeAtual(Cidade *c) {
     cidadeAtual = c;
@@ -21,7 +24,7 @@ void Carteiro::defineCidadeAtual(Cidade *c) {
 }
 void Carteiro::calculaVelocidade()
 {
-    velocidade = vMax - mochila->retornarPesoAtual()*(vMax - vMin)/mochila->retornarCapacidade();
+    velocidade = vMax - (mochila->retornarPesoAtual()*(vMax - vMin))/mochila->retornarCapacidade();
 }
 Cidade* Carteiro::retornaCidadeAtual() {return cidadeAtual;}
 bool Carteiro::contemNaRota(Cidade *c)
@@ -32,6 +35,7 @@ bool Carteiro::contemNaRota(Cidade *c)
     return false;
 
 }
+int Carteiro::retornarBeneficioAtual() {return mochila->retornarBeneficioAtual();}
 int Carteiro::retornarTamanhoMochila() {return mochila->retornarCapacidade();}
 int Carteiro::retornarQuantidadeItensMochila() {return mochila->retornarQtdCorrenteItens();}
 int Carteiro::retornarPesoAtualMochila() {return mochila->retornarPesoAtual();}

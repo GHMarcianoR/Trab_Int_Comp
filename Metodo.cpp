@@ -9,6 +9,7 @@
 Metodo::Metodo(std::vector<Cidade*> v, int tamMochila, float vMax, float vMin)
 {
     vecCidades = v;
+    trato = 0;
     float d;
     for(int i = 0; i< vecCidades.size(); i++)
     {
@@ -31,7 +32,7 @@ Metodo::Metodo(std::vector<Cidade*> v, int tamMochila, float vMax, float vMin)
     }
     carteiro = new Carteiro(tamMochila, vMax, vMin);
     carteiro->defineCidadeAtual(vecCidades[0]);
-
+    custo = 0;
 
 }
 
@@ -44,23 +45,31 @@ void Metodo::Construtivo()
             *cidade;
     int ind,qtdA , qtd;
 
+    float beneficioTotal = 0;
+
     do
     {
         qtd = 0;
         cidade = carteiro->retornaCidadeAtual();
-        ind = cidade->retornarCidadeSorteada(alpha, carteiro->retornaRota());
+        ind = cidade->retornarCidadeSorteada(alpha);
         if(carteiro->retornaRota().size() >= cidade->retornarQtdCidades())
            break;
         while(carteiro->contemNaRota(vecCidades[ind]) && carteiro->retornaRota().size() < cidade->retornarQtdCidades())
-            ind = cidade->retornarCidadeSorteada(alpha,carteiro->retornaRota());
+            ind = cidade->retornarCidadeSorteada(alpha);
 
-        calculaCusto(cidade, ind);
+        custo +=calculaCusto(cidade, ind);
+        beneficioTotal += carteiro->retornarBeneficioAtual();
+
         cidade = vecCidades[ind];
         cidade->ordenaItens();
-        qtdA = (int)(rand()%cidade->retornaVecItens().size() );
+        qtdA = (int) ((rand()%cidade->retornaVecItens().size() ));
+      //  std::cout<<qtdA<<std::endl;
+
         while(qtd != qtdA && carteiro->retornarPesoAtualMochila() <carteiro->retornarCapacidadeMochila())
         {
-            carteiro->adicionarItem(cidade->retornarItemSorteado(alpha));
+            Item *i = cidade->retornarItemSorteado(alpha);
+
+            carteiro->adicionarItem(i);
             qtd++;
         }
         carteiro->defineCidadeAtual(cidade);
@@ -68,6 +77,11 @@ void Metodo::Construtivo()
     }while(cidade != cidadeInicial);
     for(int i = 0; i <carteiro->retornaRota().size(); i++)
        std::cout<<carteiro->retornaRota()[i]->retornarId()<<" ";
+    std::cout<<"\nCusto " <<custo
+             <<"\nBeneficio "<<beneficioTotal<<std::endl;
+    std::cout<<"Valor Lucro "<<beneficioTotal - custo<<std::endl;
+    std::cout<<"Capacidade maxima mochila: "<<carteiro->retornarCapacidadeMochila()
+             <<"\nPeso Atual "<<carteiro->retornarPesoAtualMochila()<<std::endl;
 
 }
 void Metodo::definirR(float R) {this->R = R;}

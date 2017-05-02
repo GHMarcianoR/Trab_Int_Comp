@@ -7,6 +7,7 @@
 
 
 #include <vector>
+#include <list>
 #include <algorithm>
 #include "Item.h"
 
@@ -26,7 +27,7 @@ public:
     void adicionarItemCidade(Item *i);
     void ordenarDistCidade();
 
-    int retornarCidadeSorteada(float alfa, std::vector<Cidade*> c);
+    int retornarCidadeSorteada(float alfa);
     Item* retornarItemSorteado(float alfa);
 
     void ordenaItens();

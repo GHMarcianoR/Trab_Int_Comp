@@ -10,7 +10,7 @@ int main()
 {
     std::ifstream arquivo;
     std::string nome;
-    nome = "eil51_n500_bounded-strongly-corr_09.ttp";
+    nome = "eil51_n150_uncorr_10.ttp";
     arquivo.open(nome, std::ios::in);
     int numCidades;
     int numItens;
@@ -74,7 +74,10 @@ int main()
 
                for(int i = 0; i<vecCidades.size(); i++)
                    if (vecCidades[i]->retornarId() == localizacao)
-                           vecCidades[i]->adicionarItemCidade(item);
+                   {
+                       vecCidades[i]->adicionarItemCidade(item);
+                       break;
+                   }
 
                 cont++;
 
@@ -88,7 +91,10 @@ int main()
 
     Metodo* metodo = new Metodo(vecCidades,capacidadeMochila,veloMax, veloMin);
     metodo->definirR(taxaAluguel);
-    metodo->definirAlpha(0.99);
+    //0 Guloso
+    //...
+    //1 aleatorio
+    metodo->definirAlpha(0.3);
     metodo->Construtivo();
 
 

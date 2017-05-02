@@ -31,6 +31,7 @@ public:
     float retornaVelocidadeAtual();
     int retornarTamanhoMochila();
     int retornarQuantidadeItensMochila();
+    int retornarBeneficioAtual();
     bool contemNaRota(Cidade* c);
     int retornarPesoAtualMochila();
     int retornarCapacidadeMochila();

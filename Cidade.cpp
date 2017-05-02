@@ -33,25 +33,26 @@ void Cidade::ordenarDistCidade()
 {
      auxDisOrd.reserve(qtdCidades);
    for(int i = 0; i< qtdCidades; i++)
-       auxDisOrd[i] = vecDist[i];
+       auxDisOrd.push_back(vecDist[i]);
     std::sort(auxDisOrd.begin(), auxDisOrd.begin() + qtdCidades,ordena_esse_diabo);
 }
-int Cidade::retornarCidadeSorteada(float alfa, std::vector<Cidade*> c)
+int Cidade::retornarCidadeSorteada(float alfa)
 {
-    for(int i = 0; i<c.size(); i++)
-    {
-        for(int j = 0; j<auxDisOrd.size(); j++)
-        if(c[i]->retornarId() == auxDisOrd[j])
-            auxDisOrd[j] = 0;
-    }
+    long int t = (int) (auxDisOrd.size() * alfa);
+    int r;
+     if(t != 0)
+        r = (int)(rand() % t);
+     else
+         r = 0;
 
-    int r = (rand() % (int)(qtdCidades* alfa) );
-
-    while(auxDisOrd[r] == 0)
-        r = (rand() % (int)(qtdCidades* alfa) );
+    std::list<float> auxaux;
+    auxaux.assign(auxDisOrd.begin(),auxDisOrd.end());
+    float valSorteado = auxDisOrd[r];
+    auxaux.remove(valSorteado);
+    auxDisOrd.assign(auxaux.begin(),auxaux.end());
 
     for(int i = 0; i< qtdCidades; i++)
-        if(vecDist[i] == auxDisOrd[r])
+        if(vecDist[i] == valSorteado)
             return i;
 
 }
@@ -59,8 +60,17 @@ int Cidade::retornarCidadeSorteada(float alfa, std::vector<Cidade*> c)
 Item* Cidade::retornarItemSorteado(float alfa)
 {
     int p = (int)(vecItensCidade.size() * alfa);
-    int r = (rand() % p);
-    return vecItensCidade[r];
+    int r = 0;
+    if(p !=0)
+        r = (rand() % p);
+
+    std::list<Item*> auxaux;
+    auxaux.assign(vecItensCidade.begin(),vecItensCidade.end());
+    Item* valSorteado = vecItensCidade[r];
+    auxaux.remove(valSorteado);
+    vecItensCidade.assign(auxaux.begin(),auxaux.end());
+
+    return valSorteado;
 
 }
 
@@ -77,7 +87,7 @@ static bool  ordena_esse_diabo(float a, float a1) {
 }
 static bool ordena_esse_diabo2(Item* a, Item *a1)
 {
-    return a->retornarDif() > a1->retornarDif();
+    return a->retornarValor() > a1->retornarValor();
 }
 
 std::vector<Item*>  Cidade::retornaVecItens() {return vecItensCidade;}
