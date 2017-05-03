@@ -56,14 +56,16 @@ void Metodo::Construtivo()
            break;
         while(carteiro->contemNaRota(vecCidades[ind]) && carteiro->retornaRota().size() < cidade->retornarQtdCidades())
             ind = cidade->retornarCidadeSorteada(alpha);
-
         custo +=calculaCusto(cidade, ind);
-        beneficioTotal += carteiro->retornarBeneficioAtual();
-
         cidade = vecCidades[ind];
         cidade->ordenaItens();
-        qtdA = (int) ((rand()%cidade->retornaVecItens().size() ));
-      //  std::cout<<qtdA<<std::endl;
+
+
+
+     //   if(cidade->retornaVecItens().size() != 1)
+        //  qtdA = (int) ((rand()%cidade->retornaVecItens().size() ));
+        qtdA =(int) cidade->retornaVecItens().size();
+       //  qtd = 1;
 
         while(qtd != qtdA && carteiro->retornarPesoAtualMochila() <carteiro->retornarCapacidadeMochila())
         {
@@ -77,6 +79,10 @@ void Metodo::Construtivo()
     }while(cidade != cidadeInicial);
     for(int i = 0; i <carteiro->retornaRota().size(); i++)
        std::cout<<carteiro->retornaRota()[i]->retornarId()<<" ";
+
+
+    beneficioTotal += carteiro->retornarBeneficioAtual();
+
     std::cout<<"\nCusto " <<custo
              <<"\nBeneficio "<<beneficioTotal<<std::endl;
     std::cout<<"Valor Lucro "<<beneficioTotal - custo<<std::endl;
