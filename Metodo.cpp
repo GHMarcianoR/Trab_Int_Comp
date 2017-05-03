@@ -37,7 +37,9 @@ Metodo::Metodo(std::vector<Cidade*> v, int tamMochila, float vMax, float vMin)
 }
 
 float Metodo::calculaCusto(Cidade *c2, int ind) {
-    return R *(c2->distanciaAte(ind))/carteiro->retornaVelocidadeAtual();
+
+    float dist = c2->distanciaAte(ind);
+    return R *(dist)/carteiro->retornaVelocidadeAtual();
 }
 void Metodo::Construtivo()
 {
@@ -52,25 +54,19 @@ void Metodo::Construtivo()
         qtd = 0;
         cidade = carteiro->retornaCidadeAtual();
         ind = cidade->retornarCidadeSorteada(alpha);
-        if(carteiro->retornaRota().size() >= cidade->retornarQtdCidades())
-           break;
-        while(carteiro->contemNaRota(vecCidades[ind]) && carteiro->retornaRota().size() < cidade->retornarQtdCidades())
+       while(carteiro->contemNaRota(vecCidades[ind]) && carteiro->retornaRota().size() < cidade->retornarQtdCidades())
             ind = cidade->retornarCidadeSorteada(alpha);
+
         custo +=calculaCusto(cidade, ind);
         cidade = vecCidades[ind];
         cidade->ordenaItens();
 
-
-
-     //   if(cidade->retornaVecItens().size() != 1)
-        //  qtdA = (int) ((rand()%cidade->retornaVecItens().size() ));
-        qtdA =(int) cidade->retornaVecItens().size();
-       //  qtd = 1;
+       qtdA =(int) cidade->retornaVecItens().size();
+        /*Pegando todos os itens que tem na cidade*/
 
         while(qtd != qtdA && carteiro->retornarPesoAtualMochila() <carteiro->retornarCapacidadeMochila())
         {
             Item *i = cidade->retornarItemSorteado(alpha);
-
             carteiro->adicionarItem(i);
             qtd++;
         }
@@ -78,10 +74,9 @@ void Metodo::Construtivo()
 
     }while(cidade != cidadeInicial);
     for(int i = 0; i <carteiro->retornaRota().size(); i++)
-       std::cout<<carteiro->retornaRota()[i]->retornarId()<<" ";
+        std::cout<<carteiro->retornaRota()[i]->retornarId()<<" ";
 
-
-    beneficioTotal += carteiro->retornarBeneficioAtual();
+      beneficioTotal += carteiro->retornarBeneficioAtual();
 
     std::cout<<"\nCusto " <<custo
              <<"\nBeneficio "<<beneficioTotal<<std::endl;

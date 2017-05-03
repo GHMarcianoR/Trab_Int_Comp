@@ -23,7 +23,7 @@ public:
     int retornarQtdCorrenteItens();
     int retornarPesoAtual();
     int retornarBeneficioAtual();
-
+    std::vector<Item*> retornaItems();
 
 
 

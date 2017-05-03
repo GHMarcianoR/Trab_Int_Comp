@@ -35,6 +35,7 @@ public:
     bool contemNaRota(Cidade* c);
     int retornarPesoAtualMochila();
     int retornarCapacidadeMochila();
+    Mochila* retornaMochila();
     std::vector<Cidade*> retornaRota();
 
 };

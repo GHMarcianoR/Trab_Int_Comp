@@ -24,7 +24,7 @@ void Cidade::definirDistancia(int indiceCidade, float dist)
     vecDist[indiceCidade] = dist;
 }
 
-void Cidade::adicionarItemCidade(Item *i) {vecItensCidade.push_back(i);}
+void Cidade::adicionarItemCidade(Item *i) {vecItensCidade.push_back(i);vecItensCidade2.push_back(i);}
 int Cidade::retornarId() {return idCidade;}
 float Cidade::retornarX(){return coordX;}
 float Cidade::retornarY() {return coordY;}
@@ -91,3 +91,4 @@ static bool ordena_esse_diabo2(Item* a, Item *a1)
 }
 
 std::vector<Item*>  Cidade::retornaVecItens() {return vecItensCidade;}
+std::vector<Item*> Cidade::retornaVecItens2(){return vecItensCidade2;}

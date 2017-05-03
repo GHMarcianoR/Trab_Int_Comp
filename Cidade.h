@@ -16,6 +16,7 @@ class Cidade {
     std::vector<float> auxDisOrd;
     int qtdCidades;
     std::vector<Item*> vecItensCidade;
+    std::vector<Item*> vecItensCidade2;
     int idCidade;
     float coordX, coordY;
 
@@ -38,7 +39,7 @@ public:
     int retornarId();
     int   retornarQtdCidades();
     std::vector<Item*> retornaVecItens();
-
+    std::vector<Item*> retornaVecItens2();
    // static bool  ordena_esse_diabo(float a, float a1);
 
 

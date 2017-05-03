@@ -16,3 +16,4 @@ int Mochila::retornarCapacidade() {return capacidade;}
 int Mochila::retornarQtdCorrenteItens() {vecItem.size();}
 int Mochila::retornarPesoAtual() {return pesoAtual;}
 int Mochila::retornarBeneficioAtual(){return beneficioAtual;}
+std::vector<Item*> Mochila::retornaItems() {return vecItem;}

@@ -43,3 +43,4 @@ float Carteiro::retornaVelocidadeAtual() {return velocidade;}
 int Carteiro::retornarCapacidadeMochila() {return mochila->retornarCapacidade();}
 void Carteiro::adicionarCidadeRota(Cidade *c) {rota.push_back(c);}
 std::vector<Cidade*> Carteiro::retornaRota() {return rota;}
+Mochila* Carteiro::retornaMochila() {return mochila;}
