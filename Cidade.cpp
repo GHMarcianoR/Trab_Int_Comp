@@ -24,7 +24,11 @@ void Cidade::definirDistancia(int indiceCidade, float dist)
     vecDist[indiceCidade] = dist;
 }
 
-void Cidade::adicionarItemCidade(Item *i) {vecItensCidade.push_back(i);vecItensCidade2.push_back(i);}
+void Cidade::adicionarItemCidade(Item *i) {
+    vecItensCidade.push_back(i);
+    vecItensCidade2.push_back(i);
+
+}
 int Cidade::retornarId() {return idCidade;}
 float Cidade::retornarX(){return coordX;}
 float Cidade::retornarY() {return coordY;}

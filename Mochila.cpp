@@ -7,9 +7,11 @@
 Mochila::Mochila(int c) {capacidade = c; pesoAtual = 0; beneficioAtual = 0;}
 void Mochila::adicionarItem(Item *i)
 {
-    vecItem.push_back(i);
-    pesoAtual += i->retornarPeso();
-    beneficioAtual +=i->retornarValor();
+    if(i->retornarPeso() + pesoAtual <= capacidade) {
+        vecItem.push_back(i);
+        pesoAtual += i->retornarPeso();
+        beneficioAtual += i->retornarValor();
+    }
 
 }
 int Mochila::retornarCapacidade() {return capacidade;}

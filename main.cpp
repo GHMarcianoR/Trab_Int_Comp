@@ -10,7 +10,7 @@ int main()
 {
     std::ifstream arquivo;
     std::string nome;
-    nome = "eil51_n150_uncorr_10.ttp";
+    nome = "eil51_n50_bounded-strongly-corr_02.ttp";
     arquivo.open(nome, std::ios::in);
     int numCidades;
     int numItens;
@@ -78,14 +78,9 @@ int main()
                        vecCidades[i]->adicionarItemCidade(item);
                        break;
                    }
-
                 cont++;
-
             }
-
         }
-
-
 
     }
 
@@ -94,7 +89,7 @@ int main()
     //0 Guloso
     //...
     //1 aleatorio
-    metodo->definirAlpha(0.5);
+    metodo->definirAlpha(0);
     metodo->Construtivo();
 
 
