@@ -89,7 +89,7 @@ int main()
     //0 Guloso
     //...
     //1 aleatorio
-    metodo->definirAlpha(0);
+    metodo->definirAlpha(0.3);
     metodo->Construtivo();
 
 

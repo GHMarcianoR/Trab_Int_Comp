@@ -18,6 +18,7 @@ class Metodo {
     Carteiro* carteiro;
     float custo;
     float beneficio;
+    float lucroTotal;
     float R;
     int tamMochila;
     float vMax, vMin;
@@ -25,18 +26,19 @@ class Metodo {
     float distancia(float x1, float x2, float y1, float y2);
     float alpha;
     float calculaCusto(Cidade *c2, int ind);
+    int aceOfspades(Cidade* cidadeAtual, float alpha);
     float trato;
     float Objetivo();
 
 public:
         Metodo(std::vector<Cidade*> v, int tamMochila, float vMax, float vMin);
-        void buscaLocal(std::vector<Cidade*> rota,std::vector<float> diff, std::vector<float> diffOrdenado,float lucro );
+        void buscaLocal(std::vector<Cidade*> rota);
         void Construtivo();
         void definirR(float R);
         void definirAlpha(float a);
         int procura(float ultimo, std::vector<float> diff);
         int procuraCidade(int id);
-        float reCalculaLucro(std::vector<Cidade*> rota,std::vector<float> diff);
+        float reCalculaLucro(std::vector<Cidade*> rota);
         ~Metodo();
 
 

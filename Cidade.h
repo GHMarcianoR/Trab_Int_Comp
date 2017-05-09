@@ -14,11 +14,13 @@
 class Cidade {
     std::vector<float> vecDist;
     std::vector<float> auxDisOrd;
+    float coordX, coordY;
     int qtdCidades;
+    int idCidade;
     std::vector<Item*> vecItensCidade;
     std::vector<Item*> vecItensCidade2;
-    int idCidade;
-    float coordX, coordY;
+
+
 
 
 public:
@@ -27,6 +29,7 @@ public:
     void definirDistancia(int indiceCidade, float dist);
     void adicionarItemCidade(Item *i);
     void ordenarDistCidade();
+    void remove(int ind);
 
     int retornarCidadeSorteada(float alfa);
     Item* retornarItemSorteado(float alfa);

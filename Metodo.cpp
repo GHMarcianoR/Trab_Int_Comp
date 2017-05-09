@@ -46,6 +46,40 @@ float Metodo::calculaCusto(Cidade *c2, int ind) {
     float dist = c2->distanciaAte(ind);
     return R *(dist)/carteiro->retornaVelocidadeAtual();
 }
+int Metodo::aceOfspades(Cidade *cidadeAtual, float alpha)
+{
+    int ind, totalRetornadas, adicionadas = 0, indSorteado;
+    float valSorteado;
+
+    std::vector<float> vetCustos;
+    std::list<float> indice;
+    indice.clear();
+    vetCustos.clear();
+
+    alpha == 0 ? totalRetornadas =1 :
+            totalRetornadas = (int)(cidadeAtual->retornarQtdCidades() * alpha);
+
+    while(totalRetornadas != adicionadas)
+    {
+        ind = cidadeAtual->retornarCidadeSorteada(alpha);
+        indice.push_back(calculaCusto(cidadeAtual,ind));
+        indice.push_back(ind);
+        vetCustos.push_back(calculaCusto(cidadeAtual,ind));
+        adicionadas++;
+    }
+    std::sort(vetCustos.begin(),vetCustos.end());
+    indSorteado = (rand() % totalRetornadas);
+    valSorteado = vetCustos[indSorteado];
+    for(std::list<float>::iterator it = indice.begin(); it != indice.end(); ++it)
+        if(*it == valSorteado)
+        {
+            ++it;
+            return (int)(*it);
+        }
+
+
+}
+
 void Metodo::Construtivo()
 {
     Cidade* cidadeInicial = carteiro->retornaCidadeAtual(),
@@ -58,46 +92,32 @@ void Metodo::Construtivo()
     {
 
         cidade = carteiro->retornaCidadeAtual();
-        ind = cidade->retornarCidadeSorteada(alpha);
-       vecBeneficio.push_back(carteiro->retornarBeneficioAtual() - auxBeneficio);
-       while(carteiro->contemNaRota(vecCidades[ind]) && carteiro->retornaRota().size() < cidade->retornarQtdCidades())
-            ind = cidade->retornarCidadeSorteada(alpha);
-
-        custo +=calculaCusto(cidade, ind);
-        prejuizo.push_back(custo-auxCusto);
-        auxCusto = custo;
-        auxBeneficio = carteiro->retornarBeneficioAtual();
-
-        cidade = vecCidades[ind];
-        cidade->ordenaItens();
-
-       qtdA =(int) cidade->retornaVecItens().size();
-        /*Pegando todos os itens que tem na cidade*/
-
-        qtd = 0;
-        while(qtd < qtdA && carteiro->retornarPesoAtualMochila() <carteiro->retornarCapacidadeMochila())
+        ind = aceOfspades(cidade,alpha);
+        if(!carteiro->contemNaRota(vecCidades[ind]) && carteiro->retornaRota().size() < cidade->retornarQtdCidades()+1)
         {
-           // Item *i = cidade->retornarItemSorteado(alpha);
-            Item* i = cidade->retornaVecItens()[qtd];
-            carteiro->adicionarItem(i);
-            qtd++;
+            custo +=calculaCusto(cidade, ind);
+
+            cidade = vecCidades[ind];
+            cidade->ordenaItens();
+
+            qtdA =(int) cidade->retornaVecItens().size();
+            /*Pegando todos os itens que tem na cidade*/
+
+            qtd = 0;
+            while(qtd < qtdA && carteiro->retornarPesoAtualMochila() <carteiro->retornarCapacidadeMochila())
+            {
+               //  Item *i = cidade->retornarItemSorteado(alpha);
+                Item* i = cidade->retornaVecItens()[qtd];
+                carteiro->adicionarItem(i);
+                qtd++;
+            }
+
+            carteiro->defineCidadeAtual(cidade);
         }
 
-        carteiro->defineCidadeAtual(cidade);
 
+    }while(cidade != cidadeInicial && vecCidades[ind] != cidadeInicial);
 
-    }while(cidade != cidadeInicial);
-
-    std::cout<<"Itens: "<<std::endl;
-    std::cout<<std::endl;
-    std::vector<float> diff, diffOrdenado;
-    for(int i = 0; i<vecBeneficio.size(); i++)
-    {
-        diff.push_back(prejuizo[i]-vecBeneficio[i]);
-        diffOrdenado.push_back(prejuizo[i]-vecBeneficio[i]);
-
-    }
-    std::sort(diffOrdenado.begin(), diffOrdenado.begin()+diffOrdenado.size());
 
     beneficio += carteiro->retornarBeneficioAtual();
 
@@ -106,44 +126,57 @@ void Metodo::Construtivo()
     std::cout<<"Valor Lucro "<<beneficio - custo<<std::endl;
     std::cout<<"Capacidade maxima mochila: "<<carteiro->retornarCapacidadeMochila()
              <<"\nPeso Atual "<<carteiro->retornarPesoAtualMochila()<<std::endl;
-
- /*   for(int i = 0; i< carteiro->retornaRota().size(); i++)
+    for(int i = 0; i<carteiro->retornaRota().size(); i++)
         std::cout<<carteiro->retornaRota()[i]->retornarId()<<" ";
-    std::cout<<std::endl;*/
+    std::cout<<"\nTamanho Rota: "<<carteiro->retornaRota().size()<<std::endl;
 
-    buscaLocal(carteiro->retornaRota(),diff,diffOrdenado,(beneficio-custo));
+    lucroTotal = beneficio-custo;
+    buscaLocal(carteiro->retornaRota());
 
 }
-void Metodo::buscaLocal(std::vector<Cidade*> rota,std::vector<float> diff, std::vector<float> diffOrdenado,float lucro )
+void Metodo::buscaLocal(std::vector<Cidade*> rota)
 {
-    float ultimo  = diffOrdenado[diffOrdenado.size()-1], lucroR;
-    std::vector<Cidade*> auxRota = rota;
-    int ind = procura(ultimo,diff);
-    Cidade * c = rota[ind];
+    std::vector<Cidade*> rotaAux= rota;
 
-    for(int j = 0; j<rota.size();j++)
-       for(int i = 1; i<auxRota.size()-1; i++ )
+        for(unsigned long i = 1; i<rota.size() -1; i++)
         {
-            Cidade * aux = auxRota[i+1];
-            auxRota[i] = auxRota[i];
-            auxRota[ind] = aux;
-            lucroR = reCalculaLucro(auxRota, diff);
-            if(lucroR >= lucro)
+            for(unsigned long j = 1;j != rota.size()-1; j++)
             {
-                std::cout<<"\nFUNCIONOU SAPORRA DIABO FDP"<<std::endl;
-                std::cout<<"Lucro: "<<lucroR<<std::endl;
-                rota = auxRota;
-                ind = procura(ultimo,diff);
-                lucro = lucroR;
-            }
-            else
-            {
-                std::cout<<"Lucro: "<<lucroR<<"\n";
-                auxRota = rota;
-            }
+                 if(j!=i )
+                    {
+                        Cidade* cI = rota[i];
+                        Cidade* cJ = rota[j];
+                        rotaAux.at(i) = cJ;
+                        rotaAux.at(j) = cI;
+
+                        float novoLucro = reCalculaLucro(rotaAux);
+                        if(novoLucro > lucroTotal)
+                        {
+                            rota = rotaAux;
+                            lucroTotal = novoLucro;
+                            std::cout<<"Lucro Aumentou:"<<lucroTotal<<std::endl;
+                            for(int l = 0; l < rota.size(); l++)
+                                std::cout<<rota[l]->retornarId()<<" ";
+                            std::cout<<"\n";
 
 
+                        }
+                        else
+                        {
+                            /* std::cout<<"Lucro Diminuiu:"<<novoLucro<<std::endl;*/
+                            rotaAux =rota;
+                        }
+                        /* for(int i = 0; i<rota.size(); i++)
+                             std::cout<<rota[i]->retornarId()<<" ";
+                         std::cout<<"\nTamanho Rota: "<<rota.size()<<std::endl;*/
+                    }
+
+
+
+
+            }
         }
+
 
 }
 
@@ -165,7 +198,7 @@ int Metodo::procuraCidade(int id)
 
 }
 
-float Metodo::reCalculaLucro(std::vector<Cidade*> rota, std::vector<float> diff)
+float Metodo::reCalculaLucro(std::vector<Cidade*> rota)
 {
     float custo = 0;
     int peso = 0;
@@ -181,7 +214,7 @@ float Metodo::reCalculaLucro(std::vector<Cidade*> rota, std::vector<float> diff)
 
         while(qtdA != rota[i]->retornaVecItens().size())
         {
-                if (peso +  rota[i]->retornaVecItens()[qtdA]->retornarPeso() <= tamMochila)
+                if (peso + rota[i]->retornaVecItens()[qtdA]->retornarPeso() <= tamMochila)
                 {
                     peso += rota[i]->retornaVecItens()[qtdA]->retornarPeso();
                     beneneficio += rota[i]->retornaVecItens()[qtdA]->retornarValor();
@@ -193,20 +226,16 @@ float Metodo::reCalculaLucro(std::vector<Cidade*> rota, std::vector<float> diff)
         vecBeneficio.push_back(beneficioAtual- auxBeneficio );
         auxBeneficio = beneficioAtual;
         auxCusto = custo;
-        float veloCidadeAtual  =(vMax - (peso*(vMax - vMin))/tamMochila);
+        float velocidadeAtual  =(vMax - (peso*(vMax - vMin))/tamMochila);
 
         vecCusto.push_back(custo - auxCusto);
-        custo += R * rota[i]->distanciaAte(procuraCidade(rota[i+1]->retornarId()))/veloCidadeAtual;
+        custo += R * rota[i]->distanciaAte(procuraCidade(rota[i+1]->retornarId()))/velocidadeAtual;
     }
     for(int i = 0; i<vecBeneficio.size(); i++)
     {
         auxDiff.push_back((vecBeneficio[i]-vecCusto[i]));
        // std::cout<<auxDiff[i]<<" ";
     }
-
-    diff  = auxDiff;
-    std::cout<<"\n";
-    std::sort(diff.begin(), diff.end());
 
     lucro= beneneficio - custo;
     return lucro;
